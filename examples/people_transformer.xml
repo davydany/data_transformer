@@ -1,0 +1,7 @@
+<people>
+    <id>$id</id>
+    <name>$name</name>
+    <age>$age</age>
+    <height>$height</height>
+    <weight>$weight</weight>
+</people>
