@@ -6,7 +6,7 @@ A simple utility that transforms provided input to standard output, based on the
 Examples
 --------
 
-.. highlight:: bash
-   :linenos:
+If you need help at any moment, enter:
+.. code-block:: bash
 
-   transformer
+   transformer --help
