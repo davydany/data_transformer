@@ -17,7 +17,7 @@ def xslt_transformer(input_file_path, transformer_file_path):
     return ET.tostring(newdom, pretty_print=True)
 
 
-def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n"):
+def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n", row_pause=False):
     """
     Transforms a CSV file `csv_input_file_path` using the Transformation file in
     `transformer_file_path`.
@@ -50,10 +50,12 @@ def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n
 
             sys.stdout.write(output_template)
             sys.stdout.write("%s\n" % separator)
+            if row_pause:
+                raw_input("Press ENTER to continue.")
 
 
 
-def jinja_transform(csv_input_file_path, transformer_file_path, separator="\n"):
+def jinja_transform(csv_input_file_path, transformer_file_path, separator="\n", row_pause=False):
     """
     Transforms a CSV file `csv_input_file_path` using the Transformation file in
     `transformer_file_path` using Jinja2 Templating Language.
@@ -67,8 +69,9 @@ def jinja_transform(csv_input_file_path, transformer_file_path, separator="\n"):
         raise ValueError("Transformer is empty.")
 
     # parse the csv file one
-    with open(csv_input_file_path, 'rb') as csvfile:
-        reader = csv.reader(csvfile)
+    with open(csv_input_file_path, 'rU') as csvfile:
+        csvfile.seek(0)
+        reader = csv.reader(csvfile, dialect='excel')
         row_count = 0
         fieldnames = []
 
@@ -84,7 +87,9 @@ def jinja_transform(csv_input_file_path, transformer_file_path, separator="\n"):
             template = Template(output_template)
             context = {}
             for i, value in enumerate(row):
-                context[fieldnames[i]] = value
+                context[fieldnames[i]] = value.strip()
 
             sys.stdout.write(template.render(**context))
             sys.stdout.write("%s\n" % separator)
+            if row_pause:
+                raw_input("Press ENTER to continue.")

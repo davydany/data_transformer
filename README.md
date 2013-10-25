@@ -227,7 +227,7 @@ We will run the following command:
 
 Which will yield:
 
-    
+
     <people>
         <id>5.0</id>
         <name>FREDDIE</id>
