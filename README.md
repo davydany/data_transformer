@@ -1,5 +1,7 @@
 Transformer
 ===========
+![alt tag](transformer-logo-autobot-lo.jpg)
+
 
 A simple utility that transforms provided input to standard output, based on the transform.
 
