@@ -3,7 +3,8 @@ import argparse
 import logging
 import os
 import sys
-import xformer
+from transformer import xformer
+
 
 def transform(input_file_path, transformer_file_path, transform_type, separator):
     
