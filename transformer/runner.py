@@ -26,15 +26,14 @@ def transform(input_file_path, transformer_file_path, transform_type, separator)
 
 def main():
     parser = argparse.ArgumentParser(description="Transforms provided input to standard output, based on the transform.")
-    parser.add_argument('-i', '--input', help='Input File', action='store', required=True)
-    parser.add_argument('-t', '--transformer', help='Transform File', action='store', required=True)
-    parser.add_argument('-x', '--transformer_type', help='Transformer Type', choices=['xslt', 'simple'], default='simple')
+    parser.add_argument('-i', '--input', help='Path to Input File', action='store', required=True)
+    parser.add_argument('-t', '--transformer', help='Path to Transform File', action='store', required=True)
+    parser.add_argument('-x', '--transformer_type', help='Transformer Type', choices=['simple', 'xslt'])
     parser.add_argument('-s', '--separator', help='Row Separator for standard output. Not applicable for xslt.', default='')
     parser.add_argument('--prefix', help='String to place at begining of stdout.', default='')
     parser.add_argument('--suffix', help='String to place at end of stdout.', default='')
-
-
     args = parser.parse_args()
+
     try:
         sys.stdout.write('%s\n' % args.prefix)
         transform(args.input, args.transformer, args.transformer_type, args.separator)
