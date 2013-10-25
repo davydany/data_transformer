@@ -1,0 +1,9 @@
+*.pyc
+.Python
+.idea/*
+Transformer.egg-info/*
+bin/*
+build/*
+dist/*
+include/*
+lib/*

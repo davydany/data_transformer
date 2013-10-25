@@ -16,7 +16,7 @@ def xslt_transformer(input_file_path, transformer_file_path):
     return ET.tostring(newdom, pretty_print=True)
 
 
-def simple_transformer(csv_input_file_path, transformer_file_path, separator):
+def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n"):
     """
     Transforms a CSV file `csv_input_file_path` using the Transformation file in
     `transformer_file_path`.

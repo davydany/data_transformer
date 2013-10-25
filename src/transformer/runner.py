@@ -29,10 +29,15 @@ def main():
     parser.add_argument('-t', '--transformer', help='Transform File', action='store', required=True)
     parser.add_argument('-x', '--transformer_type', help='Transformer Type', choices=['xslt', 'simple'], default='simple')
     parser.add_argument('-s', '--separator', help='Row Separator for standard output. Not applicable for xslt.', default='')
+    parser.add_argument('--prefix', help='String to place at begining of stdout.', default='')
+    parser.add_argument('--suffix', help='String to place at end of stdout.', default='')
+
 
     args = parser.parse_args()
     try:
+        sys.stdout.write('%s\n' % args.prefix)
         transform(args.input, args.transformer, args.transformer_type, args.separator)
+        sys.stdout.write('%s\n' % args.suffix)
     except Exception, e:
         logging.exception("Error occurred while running code.")
 
