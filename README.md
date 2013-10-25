@@ -67,6 +67,14 @@ To output in XML, write your own or use the XML transformer file found in exampl
 
     transformer -i examples/people.csv -t examples/people_transformer.xml -x simple
 
+### Jinja2 Transformer
+
+To use the Jinja2 Transformer, do the following.
+
+    transformer -i examples/people.csv -t examples/people_transformer.jinja -x jinja
+
+This will return XML file that was formatted using the Jinja templating language.
+
 ### XSLT Transform
 
 To use the XSLT Transformer, do the following
@@ -193,6 +201,54 @@ To get:
     INSERT INTO table (id, name, age, height, weight) VALUES (3, "Bob", "17", "68", "120.0");
     
 **NOTE:** You'll need to format yourself.
+
+Jinja2 Transformer
+------------------
+
+Suppose you have a CSV file (people.csv)
+
+    id,name,age,height,weight
+    1,Alice,20,62,120.6
+    2,Freddie,21,74,190.6
+    3,Bob,17,68,120.0
+
+And we have the following Jinja2 formatted file:
+
+    <people>
+        <id>{{ id }}</id>
+        <name>{{ name }}</id>
+        <age>{{ age }}</age>
+        <height>{{ height }}</height>
+        <weight>{{ weight }}</weight>
+    </people>
+
+We will run the following command:
+
+    transformer -i examples/people.csv -t examples/people_transformer.jinja -x jinja
+
+Which will yield:
+
+    <people>
+        <id>1</id>
+        <name>Alice</id>
+        <age>20</age>
+        <height>62</height>
+        <weight>120.6</weight>
+    </people>
+    <people>
+        <id>2</id>
+        <name>Freddie</id>
+        <age>21</age>
+        <height>74</height>
+        <weight>190.6</weight>
+    </people>
+    <people>
+        <id>3</id>
+        <name>Bob</id>
+        <age>17</age>
+        <height>68</height>
+        <weight>120.0</weight>
+    </people>
 
 XSLT Transformer
 ----------------
