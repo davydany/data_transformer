@@ -48,7 +48,7 @@ def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n
                 output_template = output_template.replace("$%s" % fieldnames[i], value)
 
             sys.stdout.write(output_template)
-            sys.stdout.write(separator)
+            sys.stdout.write("%s\n" % separator)
 
 
 
