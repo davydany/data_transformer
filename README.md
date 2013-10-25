@@ -1,6 +1,6 @@
 Transformer
 ===========
-![alt tag](transformer-logo-autobot-lo.jpg)
+![alt tag](https://raw.github.com/davydany/DataTransformer/master/transformer.jpg)
 
 
 A simple utility that transforms provided input to standard output, based on the transform.
