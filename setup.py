@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
 	name="Transformer",
-	version="0.0.1",
+	version="0.0.2",
 	author="David Daniel",
 	author_email="David.Daniel@dealertrack.com",
 	description=("Transforms provided input to an output, based on the transform."),
@@ -19,5 +19,5 @@ setup(
 			'transformer = transformer.runner:main'
 		]
 	},
-	install_requires=['lxml==3.2.1']
+	install_requires=['lxml==3.2.1', 'Jinja2==2.7.1']
 )
