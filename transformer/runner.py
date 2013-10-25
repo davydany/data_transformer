@@ -18,7 +18,7 @@ def transform(input_file_path, transformer_file_path, transform_type, separator)
     # transform
     if transform_type == 'xslt':
         xformed = xformer.xslt_transformer(input_file_path, transformer_file_path)
-        sys.stdout(xformed)
+        sys.stdout.write(xformed)
     elif transform_type == 'simple':
         xformer.simple_transformer(input_file_path, transformer_file_path, separator)
 

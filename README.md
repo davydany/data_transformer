@@ -187,3 +187,100 @@ To get:
     
 **NOTE:** You'll need to format yourself.
 
+XSLT Transformer
+----------------
+
+Suppose you have an input XML file (tools.xml):
+
+    <?xml version="1.0" encoding="ISO-8859-1"?>
+    <tool>
+      <field id="prodName">
+        <value>HAMMER HG2606</value>
+      </field>
+      <field id="prodNo">
+        <value>32456240</value>
+      </field>
+      <field id="price">
+        <value>$30.00</value>
+      </field>
+    </tool>
+
+And the following is your XSLT file (tools.xslt):
+
+    <?xml version="1.0" encoding="ISO-8859-1"?>
+    <xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    
+    <xsl:template match="/">
+      <html>
+      <body>
+      <form method="post" action="edittool.asp">
+      <h2>Tool Information (edit):</h2>
+      <table border="0">
+        <xsl:for-each select="tool/field">
+        <tr>
+          <td><xsl:value-of select="@id"/></td>
+          <td>
+          <input type="text">
+          <xsl:attribute name="id">
+            <xsl:value-of select="@id" />
+          </xsl:attribute>
+          <xsl:attribute name="name">
+            <xsl:value-of select="@id" />
+          </xsl:attribute>
+          <xsl:attribute name="value">
+            <xsl:value-of select="value" />
+          </xsl:attribute>
+          </input>
+          </td>
+        </tr>
+        </xsl:for-each>
+      </table>
+      <br />
+      <input type="submit" id="btn_sub" name="btn_sub" value="Submit" />
+      <input type="reset" id="btn_res" name="btn_res" value="Reset" />
+      </form>
+      </body>
+      </html>
+    </xsl:template>
+    
+    </xsl:stylesheet>
+
+You want to run the transform with the following command:
+
+    transformer -i examples/tools.xml -t examples/tools.xslt -x xslt
+    
+And you'll get the following output:
+
+    <html>
+      <body>
+        <form method="post" action="edittool.asp">
+          <h2>Tool Information (edit):</h2>
+          <table border="0">
+            <tr>
+              <td>prodName</td>
+              <td>
+                <input type="text" id="prodName" name="prodName" value="HAMMER HG2606"/>
+              </td>
+            </tr>
+            <tr>
+              <td>prodNo</td>
+              <td>
+                <input type="text" id="prodNo" name="prodNo" value="32456240"/>
+              </td>
+            </tr>
+            <tr>
+              <td>price</td>
+              <td>
+                <input type="text" id="price" name="price" value="$30.00"/>
+              </td>
+            </tr>
+          </table>
+          <br/>
+          <input type="submit" id="btn_sub" name="btn_sub" value="Submit"/>
+          <input type="reset" id="btn_res" name="btn_res" value="Reset"/>
+        </form>
+      </body>
+    </html>
+
+
