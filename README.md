@@ -209,13 +209,17 @@ Suppose you have a CSV file (people.csv)
 
 And we have the following Jinja2 formatted file:
 
+
+    {% if id|float % 2 == 0 %}
     <people>
-        <id>{{ id }}</id>
-        <name>{{ name }}</id>
-        <age>{{ age }}</age>
-        <height>{{ height }}</height>
+        <id>{{ id|float + 3 }}</id>
+        <name>{{ name|upper }}</id>
+        <age>{{ age| float }}</age>
+        <height>{{ height|float / 12 }}</height>
         <weight>{{ weight }}</weight>
     </people>
+    {% endif %}
+
 
 We will run the following command:
 
@@ -223,27 +227,15 @@ We will run the following command:
 
 Which will yield:
 
+    
     <people>
-        <id>1</id>
-        <name>Alice</id>
-        <age>20</age>
-        <height>62</height>
-        <weight>120.6</weight>
-    </people>
-    <people>
-        <id>2</id>
-        <name>Freddie</id>
-        <age>21</age>
-        <height>74</height>
+        <id>5.0</id>
+        <name>FREDDIE</id>
+        <age>21.0</age>
+        <height>6.16666666667</height>
         <weight>190.6</weight>
     </people>
-    <people>
-        <id>3</id>
-        <name>Bob</id>
-        <age>17</age>
-        <height>68</height>
-        <weight>120.0</weight>
-    </people>
+
 
 XSLT Transformer
 ----------------

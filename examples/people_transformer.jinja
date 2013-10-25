@@ -1,7 +1,9 @@
+{% if id|float % 2 == 0 %}
 <people>
-    <id>{{ id }}</id>
-    <name>{{ name }}</id>
-    <age>{{ age }}</age>
-    <height>{{ height }}</height>
+    <id>{{ id|float + 3 }}</id>
+    <name>{{ name|upper }}</id>
+    <age>{{ age| float }}</age>
+    <height>{{ height|float / 12 }}</height>
     <weight>{{ weight }}</weight>
 </people>
+{% endif %}
