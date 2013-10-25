@@ -3,35 +3,187 @@ Transformer
 
 A simple utility that transforms provided input to standard output, based on the transform.
 
+Requires
+--------
+
+1. lxml == 3.2.1
+
 Installation
 ------------
 
-TODO
+Checkout and run setup.py
 
-Examples
---------
+    python setup.py install
+
+Usage
+-----
 
 If you need help at any moment, enter the following. This documentation assumes that you're
 using the examples in the examples file.
 
-> transformer --help
+    transformer --help
+
+You need 2 files:
+
+- Input File
+- Transform File
+
+Depending on what transform you use, you will need to provide different input
+files and transforms you use. Like most programs, this application is stupid,
+and it requires you to be explicit with what you give it. Please pay attention
+to details.
+
+You are required to pass 3 flags to transformer to work:
+
+- **-i / --input** - Path to Input File
+- **-t / --transformer** - Path to Transform File
+- **-x / --transformer_type** - Transformer Type
+
+The following are optional flags:
+
+- **-s / --separator** - Row Separator for standard output. Not applicable for xslt.
+- **--prefix** - String to place at begining of print out
+- **--suffix** - String to place at end of stdout.
+
+You can use these to understand what's going on below.
 
 ### Simple Transform
 
 To use the Simple Transformer, do the following.
 
-> transformer -i examples/people.csv -t examples/people_transformer.json -x simple
+    transformer -i examples/people.csv -t examples/people_transformer.json -x simple
 
 This will return a JSON file in the command line with the data you provided in people.csv,
 with the transform found in people_transform.json.
 
 To output in XML, write your own or use the XML transformer file found in examples:
 
-> transformer -i examples/people.csv -t examples/people_transformer.xml -x simple
+    transformer -i examples/people.csv -t examples/people_transformer.xml -x simple
 
 ### XSLT Transform
 
 To use the XSLT Transformer, do the following
 
-> transformer -i examples/people.xml -t examples/people_transformer.xslt -x xslt
+    transformer -i examples/people.xml -t examples/people_transformer.xslt -x xslt
+
+Simple Transformer
+------------------
+
+The Simple Transform doesn't have any intelligence and is not smart, so do not
+expect it to do loops and like Jinja or Django Templating Language does. I
+hope to add support for Jinja in the near future.
+
+### Input File
+
+    id,name,age,height,weight
+    1,Alice,20,62,120.6
+    2,Freddie,21,74,190.6
+    3,Bob,17,68,120.0
+
+### Transform File and Output (XML)
+
+If you want your transformation to yield a XML, create the following XML Transform File (people_transform.xml):
+
+    <person>
+        <id>$id</id>
+        <name>$name</name>
+        <age>$age</age>
+        <height>$height</height>
+        <weight>$weight</weight>
+    </person>
+
+And run:
+
+    transformer -i examples/people.csv -t examples/people_transformer.xml --prefix '<?xml version="1.0" encoding="UTF-8"?>' -x simple
+    
+To get: 
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <people>
+        <person>
+            <id>1</id>
+            <name>Alice</name>
+            <age>20</age>
+            <height>62</height>
+            <weight>120.6</weight>
+        </person>
+        <person>
+            <id>2</id>
+            <name>Freddie</name>
+            <age>21</age>
+            <height>74</height>
+            <weight>190.6</weight>
+        </person>
+        <person>
+            <id>3</id>
+            <name>Bob</name>
+            <age>17</age>
+            <height>68</height>
+            <weight>120.0</weight>
+        </person>
+    </people>
+    
+**NOTE:** You'll need to format yourself
+
+### Transform File and Output (JSON)
+If you want your transformation to yield a JSON, create the following JSON Transform File (people_transform.json):
+
+    {
+        id : "$id",
+        name : "$name",
+        age : "$age",
+        height : "$height",
+        weight : "$weight"
+    }
+
+And run:
+
+    transformer -i examples/people.csv -t examples/people_transformer.json --prefix [ --suffix ] --separator , -x simple
+    
+To get: 
+
+    [
+        {
+            id : "1",
+            name : "Alice",
+            age : "20",
+            height : "62",
+            weight : "120.6"
+        },
+        {
+            id : "2",
+            name : "Freddie",
+            age : "21",
+            height : "74",
+            weight : "190.6"
+        },
+        {
+            id : "3",
+            name : "Bob",
+            age : "17",
+            height : "68",
+            weight : "120.0"
+        },
+    ]
+    
+**NOTE:** You'll need to format yourself.
+
+### Transform File and Output (SQL)
+If you want your transformation to yield a JSON, create the following JSON Transform File (people_transform.json):
+
+    INSERT INTO table (id, name, age, height, weight) VALUES ($id, "$name", "$age", "$height", "$weight")
+
+
+
+And run:
+
+    transformer -i examples/people.csv -t examples/people_transformer.sql --separator \; -x simple
+    
+To get: 
+
+    INSERT INTO table (id, name, age, height, weight) VALUES (1, "Alice", "20", "62", "120.6");
+    INSERT INTO table (id, name, age, height, weight) VALUES (2, "Freddie", "21", "74", "190.6");
+    INSERT INTO table (id, name, age, height, weight) VALUES (3, "Bob", "17", "68", "120.0");
+    
+**NOTE:** You'll need to format yourself.
 
