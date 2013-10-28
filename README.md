@@ -71,6 +71,7 @@ The following are optional flags:
 - **-s / --separator** - Row Separator for standard output. Not applicable for xslt.
 - **--prefix** - String to place at begining of print out
 - **--suffix** - String to place at end of stdout.
+- **--row** - Enter the row number you want to process. Row number must be greater than 1, where 1 represents header.
 
 You can use these to understand what's going on below.
 
