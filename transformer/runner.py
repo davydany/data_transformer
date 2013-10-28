@@ -6,7 +6,7 @@ import sys
 from transformer import xformer
 
 
-def transform(input_file_path, transformer_file_path, transform_type, separator, row_pause, row):
+def transform(input_file_path, transformer_file_path, transform_type, separator, row_pause, row, output):
     
     # verify inputs exist
     if not os.path.exists(input_file_path):
@@ -20,15 +20,28 @@ def transform(input_file_path, transformer_file_path, transform_type, separator,
         if row < 1:
             raise ValueError("Invalid row number provided. Must be greater than 0.")
 
+    if output:
+
+        if not row and transform_type in ('simple', 'jinja', ):
+            raise ValueError("Cannot output to file if a row is not specified.")
+
+        if os.path.exists(output):
+            os.remove(output)
 
     # transform
     if transform_type == 'xslt':
         xformed = xformer.xslt_transformer(input_file_path, transformer_file_path)
-        sys.stdout.write(xformed)
+        if output:
+            with open(output, 'wb') as outfile:
+                outfile.write(xformed)
+        else:
+            sys.stdout.write(xformed)
     elif transform_type == 'jinja':
-        xformed = xformer.jinja_transform(input_file_path, transformer_file_path, separator, row_pause, row)
+        xformer.jinja_transform(input_file_path, transformer_file_path, separator=separator,
+                                row_pause=row_pause, process_row=row, output=output)
     elif transform_type == 'simple':
-        xformer.simple_transformer(input_file_path, transformer_file_path, separator, row_pause, row)
+        xformer.simple_transformer(input_file_path, transformer_file_path, separator=separator,
+                                   row_pause=row_pause, process_row=row, output=output)
 
 
 
@@ -42,11 +55,13 @@ def main():
     parser.add_argument('--suffix', help='String to place at end of stdout.', default='')
     parser.add_argument('--pause', help='Use flag to pause after each row.', action='store_true')
     parser.add_argument('--row', help='Enter row number in CSV file to process')
+    parser.add_argument('--output-filepath', help='Enter path to save file to. Does not output to STDOUT if given. Not available if rows not specified')
     args = parser.parse_args()
 
     try:
         sys.stdout.write('%s\n' % args.prefix)
-        transform(args.input, args.transformer, args.transformer_type, args.separator, args.pause, args.row)
+        transform(args.input, args.transformer, args.transformer_type, args.separator, args.pause,
+                  args.row, args.output_filepath)
         sys.stdout.write('%s\n' % args.suffix)
     except Exception, e:
         logging.exception("Error occurred while running code.")
