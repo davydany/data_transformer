@@ -6,7 +6,7 @@ def read(fname):
 
 setup(
 	name="Transformer",
-	version="0.0.2",
+	version="0.0.3",
 	author="David Daniel",
 	author_email="David.Daniel@dealertrack.com",
 	description=("Transforms provided input to an output, based on the transform."),
