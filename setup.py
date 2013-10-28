@@ -19,5 +19,5 @@ setup(
 			'transformer = transformer.runner:main'
 		]
 	},
-	install_requires=['lxml==3.2.1', 'Jinja2==2.7.1']
+	install_requires=['lxml>=3.2.1', 'Jinja2>=2.7.1']
 )
