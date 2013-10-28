@@ -17,7 +17,7 @@ def xslt_transformer(input_file_path, transformer_file_path):
     return ET.tostring(newdom, pretty_print=True)
 
 
-def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n", row_pause=False):
+def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n", row_pause=False, process_row=None):
     """
     Transforms a CSV file `csv_input_file_path` using the Transformation file in
     `transformer_file_path`.
@@ -45,6 +45,10 @@ def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n
                 fieldnames = row
                 continue
 
+            # process only requested row (if requested)
+            if process_row and process_row != row_count:
+                continue
+
             for i, value in enumerate(row):
                 output_template = output_template.replace("$%s" % fieldnames[i], value)
 
@@ -55,7 +59,7 @@ def simple_transformer(csv_input_file_path, transformer_file_path, separator="\n
 
 
 
-def jinja_transform(csv_input_file_path, transformer_file_path, separator="\n", row_pause=False):
+def jinja_transform(csv_input_file_path, transformer_file_path, separator="\n", row_pause=False, process_row=None):
     """
     Transforms a CSV file `csv_input_file_path` using the Transformation file in
     `transformer_file_path` using Jinja2 Templating Language.
@@ -82,6 +86,10 @@ def jinja_transform(csv_input_file_path, transformer_file_path, separator="\n", 
             # retrieve field names during first pass
             if row_count == 1:
                 fieldnames = row
+                continue
+
+            # process only requested row (if requested)
+            if process_row and process_row != row_count:
                 continue
 
             template = Template(output_template)
