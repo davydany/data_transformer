@@ -8,8 +8,9 @@ A simple utility that transforms provided input to standard output, based on the
 Requires
 --------
 
-1. lxml == 3.2.1
-2. Jinja2 == 2.7.1
+1. lxml >= 3.2.1
+2. Jinja2 >= 2.7.1
+3. MarkupSafe >= 0.18
 
 Installation
 ------------
@@ -72,6 +73,7 @@ The following are optional flags:
 - **--prefix** - String to place at begining of print out
 - **--suffix** - String to place at end of stdout.
 - **--row** - Enter the row number you want to process. Row number must be greater than 1, where 1 represents header.
+- **--output-filepath** - Enter absolute path to where you want to save your file. **NOTE:** Row MUST be provided for this. Only used for Jinja and Simple transforms.
 
 You can use these to understand what's going on below.
 
