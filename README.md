@@ -9,6 +9,7 @@ Requires
 --------
 
 1. lxml == 3.2.1
+2. Jinja2 == 2.7.1
 
 Installation
 ------------
@@ -16,6 +17,30 @@ Installation
 Checkout and run setup.py
 
     python setup.py install
+
+Features
+--------
+
+DataTransformer transforms your data using the transform file you provide it. It supports 3
+formats. They are:
+
+- Simple Transformer
+- Jinja2 Template Language
+- XSLT Transform
+
+**Which one should you use?**
+
+Well that depends on what you want to do. If you're comfortable with representing your input 
+with XML and transforming with XSLT, you should use XSLT transforms. Most people are not, so
+that's why you can use the Simple Transform and Jinja2 Template Language. Jinja2 is just as
+powerful (if not more powerful) than XSLT. However, with great power comes great need to 
+understand what you're doing. You will need to read Jinja2's documentation before 
+fully utilizing transformer. The simplest solution, therefore, is to use the Simple Transformer
+but it is not very smart. You cannot use if/then conditions, add/subtract numbers or check if a 
+number is odd or even. Therefore, you are limited with just string replace. If this is what you
+want, feel free to use the Simple transformer.
+
+However, I urge you to look at the Usage and the examples below before making your decision.
 
 Usage
 -----
