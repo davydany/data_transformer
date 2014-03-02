@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Data transformer by davydany</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Data transformer</h1>
+        <h2>Transforms provided input data of a certain format to a different format specified by the provided transform.</h2>
+        <a href="https://github.com/davydany/data_transformer" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="transformer" class="anchor" href="#transformer"><span class="octicon octicon-link"></span></a>Transformer</h1>
+
+<p><img src="https://raw.github.com/davydany/DataTransformer/master/transformer.jpg" alt="alt tag"></p>
+
+<p>A simple utility that transforms provided input to standard output, based on the transform.</p>
+
+<h2>
+<a name="requires" class="anchor" href="#requires"><span class="octicon octicon-link"></span></a>Requires</h2>
+
+<ol>
+<li>lxml &gt;= 3.2.1</li>
+<li>Jinja2 &gt;= 2.7.1</li>
+<li>MarkupSafe &gt;= 0.18</li>
+</ol><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Checkout and run setup.py</p>
+
+<pre><code>python setup.py install
+</code></pre>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<p>DataTransformer transforms your data using the transform file you provide it. It supports 3
+formats. They are:</p>
+
+<ul>
+<li>Simple Transformer</li>
+<li>Jinja2 Template Language</li>
+<li>XSLT Transform</li>
+</ul><p><strong>Which one should you use?</strong></p>
+
+<p>Well that depends on what you want to do. If you're comfortable with representing your input 
+with XML and transforming with XSLT, you should use XSLT transforms. Most people are not, so
+that's why you can use the Simple Transform and Jinja2 Template Language. Jinja2 is just as
+powerful (if not more powerful) than XSLT. However, with great power comes great need to 
+understand what you're doing. You will need to read Jinja2's documentation before 
+fully utilizing transformer. The simplest solution, therefore, is to use the Simple Transformer
+but it is not very smart. You cannot use if/then conditions, add/subtract numbers or check if a 
+number is odd or even. Therefore, you are limited with just string replace. If this is what you
+want, feel free to use the Simple transformer.</p>
+
+<p>However, I urge you to look at the Usage and the examples below before making your decision.</p>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>If you need help at any moment, enter the following. This documentation assumes that you're
+using the examples in the examples file.</p>
+
+<pre><code>transformer --help
+</code></pre>
+
+<p>You need 2 files:</p>
+
+<ul>
+<li>Input File</li>
+<li>Transform File</li>
+</ul><p>Depending on what transform you use, you will need to provide different input
+files and transforms you use. Like most programs, this application is stupid,
+and it requires you to be explicit with what you give it. Please pay attention
+to details.</p>
+
+<p>You are required to pass 3 flags to transformer to work:</p>
+
+<ul>
+<li>
+<strong>-i / --input</strong> - Path to Input File</li>
+<li>
+<strong>-t / --transformer</strong> - Path to Transform File</li>
+<li>
+<strong>-x / --transformer_type</strong> - Transformer Type</li>
+</ul><p>The following are optional flags:</p>
+
+<ul>
+<li>
+<strong>-s / --separator</strong> - Row Separator for standard output. Not applicable for xslt.</li>
+<li>
+<strong>--prefix</strong> - String to place at begining of print out</li>
+<li>
+<strong>--suffix</strong> - String to place at end of stdout.</li>
+<li>
+<strong>--row</strong> - Enter the row number you want to process. Row number must be greater than 1, where 1 represents header.</li>
+<li>
+<strong>--output-filepath</strong> - Enter absolute path to where you want to save your file. <strong>NOTE:</strong> Row MUST be provided for this. Only used for Jinja and Simple transforms.</li>
+</ul><p>You can use these to understand what's going on below.</p>
+
+<h3>
+<a name="simple-transform" class="anchor" href="#simple-transform"><span class="octicon octicon-link"></span></a>Simple Transform</h3>
+
+<p>To use the Simple Transformer, do the following.</p>
+
+<pre><code>transformer -i examples/people.csv -t examples/people_transformer.json -x simple
+</code></pre>
+
+<p>This will return a JSON file in the command line with the data you provided in people.csv,
+with the transform found in people_transform.json.</p>
+
+<p>To output in XML, write your own or use the XML transformer file found in examples:</p>
+
+<pre><code>transformer -i examples/people.csv -t examples/people_transformer.xml -x simple
+</code></pre>
+
+<h3>
+<a name="jinja2-transformer" class="anchor" href="#jinja2-transformer"><span class="octicon octicon-link"></span></a>Jinja2 Transformer</h3>
+
+<p>To use the Jinja2 Transformer, do the following.</p>
+
+<pre><code>transformer -i examples/people.csv -t examples/people_transformer.jinja -x jinja
+</code></pre>
+
+<p>This will return XML file that was formatted using the Jinja templating language.</p>
+
+<h3>
+<a name="xslt-transform" class="anchor" href="#xslt-transform"><span class="octicon octicon-link"></span></a>XSLT Transform</h3>
+
+<p>To use the XSLT Transformer, do the following</p>
+
+<pre><code>transformer -i examples/people.xml -t examples/people_transformer.xslt -x xslt
+</code></pre>
+
+<h2>
+<a name="simple-transformer" class="anchor" href="#simple-transformer"><span class="octicon octicon-link"></span></a>Simple Transformer</h2>
+
+<p>The Simple Transform doesn't have any intelligence and is not smart, so do not
+expect it to do loops and like Jinja or Django Templating Language does. I
+hope to add support for Jinja in the near future.</p>
+
+<h3>
+<a name="input-file" class="anchor" href="#input-file"><span class="octicon octicon-link"></span></a>Input File</h3>
+
+<pre><code>id,name,age,height,weight
+1,Alice,20,62,120.6
+2,Freddie,21,74,190.6
+3,Bob,17,68,120.0
+</code></pre>
+
+<h3>
+<a name="transform-file-and-output-xml" class="anchor" href="#transform-file-and-output-xml"><span class="octicon octicon-link"></span></a>Transform File and Output (XML)</h3>
+
+<p>If you want your transformation to yield a XML, create the following XML Transform File (people_transform.xml):</p>
+
+<pre><code>&lt;person&gt;
+    &lt;id&gt;$id&lt;/id&gt;
+    &lt;name&gt;$name&lt;/name&gt;
+    &lt;age&gt;$age&lt;/age&gt;
+    &lt;height&gt;$height&lt;/height&gt;
+    &lt;weight&gt;$weight&lt;/weight&gt;
+&lt;/person&gt;
+</code></pre>
+
+<p>And run:</p>
+
+<pre><code>transformer -i examples/people.csv -t examples/people_transformer.xml --prefix '&lt;?xml version="1.0" encoding="UTF-8"?&gt;' -x simple
+</code></pre>
+
+<p>To get: </p>
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;people&gt;
+    &lt;person&gt;
+        &lt;id&gt;1&lt;/id&gt;
+        &lt;name&gt;Alice&lt;/name&gt;
+        &lt;age&gt;20&lt;/age&gt;
+        &lt;height&gt;62&lt;/height&gt;
+        &lt;weight&gt;120.6&lt;/weight&gt;
+    &lt;/person&gt;
+    &lt;person&gt;
+        &lt;id&gt;2&lt;/id&gt;
+        &lt;name&gt;Freddie&lt;/name&gt;
+        &lt;age&gt;21&lt;/age&gt;
+        &lt;height&gt;74&lt;/height&gt;
+        &lt;weight&gt;190.6&lt;/weight&gt;
+    &lt;/person&gt;
+    &lt;person&gt;
+        &lt;id&gt;3&lt;/id&gt;
+        &lt;name&gt;Bob&lt;/name&gt;
+        &lt;age&gt;17&lt;/age&gt;
+        &lt;height&gt;68&lt;/height&gt;
+        &lt;weight&gt;120.0&lt;/weight&gt;
+    &lt;/person&gt;
+&lt;/people&gt;
+</code></pre>
+
+<p><strong>NOTE:</strong> You'll need to format yourself</p>
+
+<h3>
+<a name="transform-file-and-output-json" class="anchor" href="#transform-file-and-output-json"><span class="octicon octicon-link"></span></a>Transform File and Output (JSON)</h3>
+
+<p>If you want your transformation to yield a JSON, create the following JSON Transform File (people_transform.json):</p>
+
+<pre><code>{
+    id : "$id",
+    name : "$name",
+    age : "$age",
+    height : "$height",
+    weight : "$weight"
+}
+</code></pre>
+
+<p>And run:</p>
+
+<pre><code>transformer -i examples/people.csv -t examples/people_transformer.json --prefix [ --suffix ] --separator , -x simple
+</code></pre>
+
+<p>To get: </p>
+
+<pre><code>[
+    {
+        id : "1",
+        name : "Alice",
+        age : "20",
+        height : "62",
+        weight : "120.6"
+    },
+    {
+        id : "2",
+        name : "Freddie",
+        age : "21",
+        height : "74",
+        weight : "190.6"
+    },
+    {
+        id : "3",
+        name : "Bob",
+        age : "17",
+        height : "68",
+        weight : "120.0"
+    },
+]
+</code></pre>
+
+<p><strong>NOTE:</strong> You'll need to format yourself.</p>
+
+<h3>
+<a name="transform-file-and-output-sql" class="anchor" href="#transform-file-and-output-sql"><span class="octicon octicon-link"></span></a>Transform File and Output (SQL)</h3>
+
+<p>If you want your transformation to yield a JSON, create the following JSON Transform File (people_transform.json):</p>
+
+<pre><code>INSERT INTO table (id, name, age, height, weight) VALUES ($id, "$name", "$age", "$height", "$weight")
+</code></pre>
+
+<p>And run:</p>
+
+<pre><code>transformer -i examples/people.csv -t examples/people_transformer.sql --separator \; -x simple
+</code></pre>
+
+<p>To get: </p>
+
+<pre><code>INSERT INTO table (id, name, age, height, weight) VALUES (1, "Alice", "20", "62", "120.6");
+INSERT INTO table (id, name, age, height, weight) VALUES (2, "Freddie", "21", "74", "190.6");
+INSERT INTO table (id, name, age, height, weight) VALUES (3, "Bob", "17", "68", "120.0");
+</code></pre>
+
+<p><strong>NOTE:</strong> You'll need to format yourself.</p>
+
+<h2>
+<a name="jinja2-transformer-1" class="anchor" href="#jinja2-transformer-1"><span class="octicon octicon-link"></span></a>Jinja2 Transformer</h2>
+
+<p>Suppose you have a CSV file (people.csv)</p>
+
+<pre><code>id,name,age,height,weight
+1,Alice,20,62,120.6
+2,Freddie,21,74,190.6
+3,Bob,17,68,120.0
+</code></pre>
+
+<p>And we have the following Jinja2 formatted file:</p>
+
+<pre><code>{% if id|float % 2 == 0 %}
+&lt;people&gt;
+    &lt;id&gt;{{ id|float + 3 }}&lt;/id&gt;
+    &lt;name&gt;{{ name|upper }}&lt;/id&gt;
+    &lt;age&gt;{{ age| float }}&lt;/age&gt;
+    &lt;height&gt;{{ height|float / 12 }}&lt;/height&gt;
+    &lt;weight&gt;{{ weight }}&lt;/weight&gt;
+&lt;/people&gt;
+{% endif %}
+</code></pre>
+
+<p>We will run the following command:</p>
+
+<pre><code>transformer -i examples/people.csv -t examples/people_transformer.jinja -x jinja
+</code></pre>
+
+<p>Which will yield:</p>
+
+<pre><code>&lt;people&gt;
+    &lt;id&gt;5.0&lt;/id&gt;
+    &lt;name&gt;FREDDIE&lt;/id&gt;
+    &lt;age&gt;21.0&lt;/age&gt;
+    &lt;height&gt;6.16666666667&lt;/height&gt;
+    &lt;weight&gt;190.6&lt;/weight&gt;
+&lt;/people&gt;
+</code></pre>
+
+<h2>
+<a name="xslt-transformer" class="anchor" href="#xslt-transformer"><span class="octicon octicon-link"></span></a>XSLT Transformer</h2>
+
+<p>Suppose you have an input XML file (tools.xml):</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;tool&gt;
+  &lt;field id="prodName"&gt;
+    &lt;value&gt;HAMMER HG2606&lt;/value&gt;
+  &lt;/field&gt;
+  &lt;field id="prodNo"&gt;
+    &lt;value&gt;32456240&lt;/value&gt;
+  &lt;/field&gt;
+  &lt;field id="price"&gt;
+    &lt;value&gt;$30.00&lt;/value&gt;
+  &lt;/field&gt;
+&lt;/tool&gt;
+</code></pre>
+
+<p>And the following is your XSLT file (tools.xslt):</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+
+&lt;xsl:template match="/"&gt;
+  &lt;html&gt;
+  &lt;body&gt;
+  &lt;form method="post" action="edittool.asp"&gt;
+  &lt;h2&gt;Tool Information (edit):&lt;/h2&gt;
+  &lt;table border="0"&gt;
+    &lt;xsl:for-each select="tool/field"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;xsl:value-of select="@id"/&gt;&lt;/td&gt;
+      &lt;td&gt;
+      &lt;input type="text"&gt;
+      &lt;xsl:attribute name="id"&gt;
+        &lt;xsl:value-of select="@id" /&gt;
+      &lt;/xsl:attribute&gt;
+      &lt;xsl:attribute name="name"&gt;
+        &lt;xsl:value-of select="@id" /&gt;
+      &lt;/xsl:attribute&gt;
+      &lt;xsl:attribute name="value"&gt;
+        &lt;xsl:value-of select="value" /&gt;
+      &lt;/xsl:attribute&gt;
+      &lt;/input&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/xsl:for-each&gt;
+  &lt;/table&gt;
+  &lt;br /&gt;
+  &lt;input type="submit" id="btn_sub" name="btn_sub" value="Submit" /&gt;
+  &lt;input type="reset" id="btn_res" name="btn_res" value="Reset" /&gt;
+  &lt;/form&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+&lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;
+</code></pre>
+
+<p>You want to run the transform with the following command:</p>
+
+<pre><code>transformer -i examples/tools.xml -t examples/tools.xslt -x xslt
+</code></pre>
+
+<p>And you'll get the following output:</p>
+
+<pre><code>&lt;html&gt;
+  &lt;body&gt;
+    &lt;form method="post" action="edittool.asp"&gt;
+      &lt;h2&gt;Tool Information (edit):&lt;/h2&gt;
+      &lt;table border="0"&gt;
+        &lt;tr&gt;
+          &lt;td&gt;prodName&lt;/td&gt;
+          &lt;td&gt;
+            &lt;input type="text" id="prodName" name="prodName" value="HAMMER HG2606"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;prodNo&lt;/td&gt;
+          &lt;td&gt;
+            &lt;input type="text" id="prodNo" name="prodNo" value="32456240"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;price&lt;/td&gt;
+          &lt;td&gt;
+            &lt;input type="text" id="price" name="price" value="$30.00"/&gt;
+          &lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/table&gt;
+      &lt;br/&gt;
+      &lt;input type="submit" id="btn_sub" name="btn_sub" value="Submit"/&gt;
+      &lt;input type="reset" id="btn_res" name="btn_res" value="Reset"/&gt;
+    &lt;/form&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/davydany/data_transformer/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/davydany/data_transformer/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/davydany/data_transformer"></a> is maintained by <a href="https://github.com/davydany">davydany</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-15613139-3");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
