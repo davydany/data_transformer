@@ -3,7 +3,7 @@ Transformer
 ![alt tag](https://raw.github.com/davydany/DataTransformer/master/transformer.jpg)
 
 
-A simple utility that transforms provided input to standard output, based on the transform.
+Utility that transforms provided tabulated data to any output, based on provided transform.
 
 Requires
 --------
