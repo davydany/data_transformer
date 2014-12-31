@@ -5,8 +5,8 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-	name="Transformer",
-	version="0.0.3",
+	name="Data-Transformer",
+	version="0.1",
 	author="David Daniel",
 	author_email="David.Daniel@dealertrack.com",
 	description=("Transforms provided input to an output, based on the transform."),
