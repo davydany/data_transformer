@@ -12,12 +12,13 @@ setup(
 	description=("Transforms provided input to an output, based on the transform."),
 	license="BSD",
 	keywords="transformer xslt xml xslt transform",
-	packages=find_packages(),
+	packages=['transformer'],
 	long_description=read('README.md'),
 	entry_points={
 		'console_scripts' : [
 			'transformer = transformer.runner:main'
 		]
 	},
-	install_requires=['lxml>=3.2.1', 'Jinja2>=2.7.1']
+	install_requires=['lxml>=3.2.1', 'Jinja2>=2.7.1'],
+    url='https://github.com/davydany/data_transformer'
 )
